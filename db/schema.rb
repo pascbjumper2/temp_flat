@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150120012030) do
+ActiveRecord::Schema.define(version: 20150120082522) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20150120012030) do
     t.boolean  "complete"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "stripe_token"
   end
 
   create_table "transactions", force: true do |t|

@@ -39,6 +39,17 @@
 
     $( document ).ready(function() {
         $( "#checkout" ).hide( );
+      $('#checkout-form').hide();
+
+      $('#checkout-button').click(function() {
+        $("#checkout-form").fadeIn();
+      });
+
+      Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
+      $('#submit_transaction').click(function(e) {
+        e.preventDefault();
+        process_card();
+      });
     });
 
 
@@ -52,7 +63,6 @@
         checkout_array.push(product_id);
         $("#total").text("Total: $" + total);
         $(".submit_to").val(checkout_array);
-        alert(price + " and " + shipping);
     }
 
     //Removes from cart by changing product_id in array to 0, and removing visible entry
@@ -64,37 +74,71 @@
         $("#total").text("Total: $" + total);
     }
 
+    function stripe_handler(status, response) {
+      if ( status == 200 ) {
+        $('#transaction_stripe_card_token').val(response.id);
+        $("#checkout-form").submit();
+        return true;
+      } else {
+        $('#stripe_error').text(response.error.message);
+        return false;
+      }
+    }
+
+    function process_card() {
+      var params = {
+        name: $('#transaction_name').val(),
+        address_line1: $('#transaction_address').val(),
+        address_city: $('#transaction_city').val(),
+        address_state: $('#transaction_state').val(),
+        address_zip: $('#transaction_zip').val(),
+        number: $('#transaction_number').val().replace(/[|&;$%@"<>()+,]/g, ""),
+        cvc: $('#transaction_cvc').val(),
+        expMonth: $('#transaction_month').val(),
+        expYear: $('#transaction_year').val()
+      };
+      return Stripe.createToken(params, stripe_handler);
+    }
+
 
 </script>
 
 
 
-
 <div id="checkout" class="container" style="margin-bottom: 50px;">
-    <div class="row">
-        <div class="panel panel-default">
-          <div class="panel-heading" style="height:50px;"><h5 class="panel-title pull-left" style="padding-top:7px;"><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</h5><button class="btn btn-info pull-right" style="margin-top:-2px;">Checkout</button></div>
-          <table class="table">
-
-                <tr>
-                  <td class="col-md-4"><b>Item</b></td>
-                  <td class="col-md-4"><b>Price</b></td>
-                  <td class="col-md-4"></td>
-                </tr>
-
-          </table>
-          <div class="panel-footer"><b id="total">Total:</b></div>
-        </div>
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading" style="height:50px;">
+        <h5 class="panel-title pull-left" style="padding-top:7px;">
+          <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
+        </h5>
+        <button class="btn btn-info pull-right" style="margin-top:-2px;" id="checkout-button">Checkout</button>
+      </div>
+      <table class="table">
+        <tr>
+          <td class="col-md-4"><b>Item</b></td>
+          <td class="col-md-4"><b>Price</b></td>
+          <td class="col-md-4"></td>
+        </tr>
+      </table>
+      <div class="panel-footer"><b id="total">Total:</b></div>
     </div>
+  </div>
 </div>
 
-
-
-
-<%= form_tag("/visitors/receive", method: :post) do %>
-    <%#= hidden_field 'swag', :class => 'submit_to', value: 'posted_array' %>
-    <input name="posted_array" class="submit_to" value="cellphone" type="hidden">
-    <%= submit_tag("Submit") %>
+<%= bootstrap_form_for(:transaction, {url: "/visitors/receive", method: :post, html: {id: 'checkout-form'}}) do |f| %>
+  <%= f.hidden_field :products, class: 'submit_to' %>
+  <%= f.hidden_field :stripe_card_token %>
+  <%= f.text_field :name %>
+  <%= f.text_field :address %>
+  <%= f.text_field :city %>
+  <%= f.text_field :state %>
+  <%= f.text_field :zip %>
+  <%= f.text_field :number %>
+  <%= f.text_field :cvc %>
+  <%= f.select :month, 1..12 %>
+  <%= f.select :year, Date.today.year..10.years.from_now.year %>
+  <%= f.submit 'Submit', id: 'submit_transaction' %>
 <% end %>
 
 
