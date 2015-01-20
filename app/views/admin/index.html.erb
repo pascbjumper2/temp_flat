@@ -1,0 +1,223 @@
+<!--<h1>Admin Panel</h1>-->
+
+<div class="container-push">
+
+  <!-------->
+  <div id="content">
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+      <li class="active"><a href="#Products" data-toggle="tab">Products</a></li>
+      <li><a href="#Content" data-toggle="tab">Content</a></li>
+      <li><a href="#Contact" data-toggle="tab">Contact</a></li>
+      <li><a href="#Blog" data-toggle="tab">Blog</a></li>
+      <li><a href="#Users" data-toggle="tab">Users</a></li>
+    </ul>
+    <div id="my-tab-content" class="tab-content">
+
+      <!------------------------------------------------------ Product - START ----------------------------------------------------------------------->
+
+
+      <div class="tab-pane active" id="Products">
+
+        <h2>Products</h2>
+        <div class="well">
+            <h3>Add Product: </h3>
+            <%= bootstrap_form_for(@product, :html => {:multipart => true}, layout: :horizontal, control_col: "col-sm-4") do |f| %>
+                <%= f.text_field :name %><br/>
+                <%= f.text_area :description %><br/>
+                <%= f.number_field :stock %><br/>
+                <%= f.number_field :serial %><br/>
+                <%= f.number_field :price, label: "Price (In cents)" %><br/>
+                <%= f.number_field :shipping, label: "Shipping Cost (In cents)" %><br/>
+                <%= f.text_field :order %><br/>
+                <%= f.file_field :image %><br/>
+                <span style="margin-left:10vw"><%= f.submit %></span><br/><br/>
+            <% end %>
+        </div>
+
+        <% @products.each do |g| %>
+            <div class="well">
+                <p>Name: <%= g.name %></p>
+                <p>Description: <%= g.description.html_safe %></p>
+                <p># in Stock: <%= g.stock %></p>
+                <p>Serial #: <%= g.serial %></p>
+                <p>Price: <%= number_to_currency(g.price/100.00) %></p>
+                <p>shipping cost: <%= number_to_currency(g.shipping/100.00) %></p>
+                <p>Position #: <%= g.order %></p>
+                <%= image_tag g.image.url, :class => 'sized pull-left' %><br/>
+                <div style="clear:both;">
+                    <%= link_to "Delete", product_path(g), method: :delete %> |
+                    <%= link_to "Edit", edit_product_path(g) %>
+                </div>
+                <br/>
+            </div>
+        <% end %>
+
+
+      </div>
+      <!------------------------------------------------------ Product - END ----------------------------------------------------------------------->
+      <!------------------------------------------------------ Content - START ----------------------------------------------------------------------->
+      <div class="tab-pane" id="Content">
+        <h1>Content</h1>
+
+        <div class="well">
+          <%= bootstrap_form_for @content, controller: :contents, action: :create, layout: :inline do |content| %>
+              <h3>Add a new content block</h3><br/>
+              <%= content.text_field :title %>
+              <%= content.select :category, [["About", 1], ["Advantages", 2], ["Tech Specs", 3], ["Usage", 4], ["FAQ", 5]], {label: "Category"}, {class: "selectpicker"} %>
+              <%= content.number_field :order, {label: "Position #"} %><br/><br/>
+              <%= content.text_area :body, :rows => 5, :cols => 100 %><br/><br/>
+              <%= content.primary "Add content block" %>
+          <% end %>
+        </div>
+
+
+
+
+        <% 5.times do |catcounter| %>
+            <% catcount = catcounter + 1 %>
+            <div class="well">
+              <h3><%= catcount_to_cat(catcount) %></h3>
+              <% @content_items.where(:category => catcount.to_s).order(:order).each do |f| %>
+                  <div class="well">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h3><%= f.order.ordinalize %> content block</h3>
+                        <h5><%= f.title %></h5>
+                        <%= f.body.html_safe %><br/>
+                        <%= link_to "Delete", content_path(f), method: :delete, data: {confirm: "Are you sure you wish to delete this content block? It can not be restored."} %>
+                        |
+                        <%= link_to "Edit", edit_content_path(f) %>
+                      </div>
+                      <div class="col-md-6">
+                        <h3>Add New Image</h3>
+
+                        <%= bootstrap_form_for(@gallery, :html => {:multipart => true}, layout: :inline, action: :create) do |g| %>
+                            <%= g.number_field :order %>
+                            <%= g.number_field :width %><br/>
+                            <%= g.hidden_field :content_id, value: f.id %><br/>
+                            <%= g.file_field :image %><br/><br/>
+                            <%= g.primary "Add image" %>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div class="image_box">
+                      <h3>Images:</h3>
+
+
+                      <% Gallery.where(:content_id => f).order(:order).each do |h| %>
+                          <div class="image_box_inner">
+                            <p><%= h.order.ordinalize %> image | Width: <%= h.width %>px</p>
+                            <%= link_to "Delete", gallery_path(h), method: :delete, data: {confirm: "Are you sure you wish to delete this image? It can not be restored."} %>
+                            <%= image_tag h.image.url, :style => "height: 200px; margin-left:0px;" %>
+                          </div>
+                      <% end %>
+                      <div style="clear:both;"></div>
+                    </div>
+                  </div>
+
+
+              <% end %>
+
+
+            </div>
+        <% end %>
+
+
+      </div>
+      <!------------------------------------------------------ Content - END ----------------------------------------------------------------------->
+      <!------------------------------------------------------ Contact - START ----------------------------------------------------------------------->
+      <div class="tab-pane" id="Contact">
+        <h1>Contact Info</h1>
+
+        <div class="well">
+          <% if (@designs == nil) %>
+              <%= bootstrap_form_for @design, layout: :horizontal, control_col: "col-sm-6" do |h| %>
+                  <%#= h.text_field :sitename %>
+                  <%#= h.text_field :name %>
+                  <%= h.text_field :email %>
+                  <%= h.text_field :phone %>
+                  <%= h.text_field :address %>
+                  <span style="margin-left:10vw"><%= h.submit %></span>
+              <% end %>
+          <% else %>
+              <%= bootstrap_form_for @designs, layout: :horizontal, control_col: "col-sm-6", action: :update do |i| %>
+                  <%#= i.text_field :sitename %>
+                  <%#= i.text_field :name %>
+                  <%= i.text_field :email %>
+                  <%= i.text_field :phone %>
+                  <%= i.text_field :address %>
+                  <span style="margin-left:10vw"><%= i.submit %></span>
+              <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <!------------------------------------------------------ Contact - END ----------------------------------------------------------------------->
+      <!------------------------------------------------------ Blog - START ----------------------------------------------------------------------->
+      <div class="tab-pane" id="Blog">
+        <h1>Blog</h1>
+
+        <div class="well">
+          <h4>New post</h4>
+          <%= bootstrap_form_for @article do |f| %>
+              <%= f.text_field :title %>
+              <%= f.label :body %>
+              <%= f.cktext_area :body, rows: 10 %><br/>
+              <%= f.submit %>
+          <% end %>
+        </div>
+
+
+        <% @articles.each do |article| %>
+            <div class="well">
+              <h3><%= article.title.html_safe %></h3>
+              <h4><%= article.created_at.strftime("%Y-%m-%d") %></h4>
+              <p><%= article.body.html_safe %></p>
+              <%= link_to "Edit Article", edit_article_path(article) %>
+            </div>
+        <% end %>
+
+        <br/>
+
+
+      </div>
+      <!------------------------------------------------------ Blog - END ----------------------------------------------------------------------->
+      <div class="tab-pane" id="Users">
+
+        <h3>Users</h3>
+        <div class="column">
+          <table class="table">
+            <tbody>
+            <% @users.each do |user| %>
+                <tr>
+                  <%= render user %>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(document).ready(function ($) {
+          $('#tabs').tab();
+      });
+  </script>
+
+</div> <!-- container -->
+
+
+
+
+
+
+
+
+
+
+
+
+

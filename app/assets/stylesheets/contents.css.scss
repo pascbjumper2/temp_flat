@@ -1,0 +1,22 @@
+// Place all the styles related to the Content controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.well {
+  margin: 30px;
+  padding: 20px;
+
+  h3 {
+    margin-top: 0px;
+  }
+}
+
+.well label {
+  margin-right: 10px;
+  margin-left: 5px;
+
+  &:after{
+    content: ": ";
+  }
+
+}

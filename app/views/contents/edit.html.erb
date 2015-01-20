@@ -1,0 +1,10 @@
+<div class="well">
+  <%= bootstrap_form_for @content, controller: :contents, action: :create, layout: :inline do |content| %>
+      <h3>Add a new content block</h3><br/>
+      <%= content.text_field :title %>
+      <%= content.select :category, [["About", 1], ["Advantages", 2], ["Tech Specs", 3], ["Usage", 4], ["FAQ", 5]], {label: "Category"}, {class: "selectpicker"} %>
+      <%= content.number_field :order, {label: "Position #"} %><br/><br/>
+      <%= content.text_area :body, :rows => 5, :cols => 100 %><br/><br/>
+      <%= content.primary "Update content block" %>
+  <% end %>
+</div>

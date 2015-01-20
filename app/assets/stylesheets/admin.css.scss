@@ -1,0 +1,53 @@
+// Place all the styles related to the admin controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.tab-pane .well {
+  margin: 30px;
+  padding: 20px;
+  overflow: hidden;
+
+  h3 {
+    margin-top: 0px;
+  }
+}
+
+.tab-pane .well label {
+  margin-right: 10px;
+  margin-left: 5px;
+
+  &:after{
+    content: ": ";
+  }
+
+}
+
+
+
+.well .col-md-6:nth-child(even) {
+  height: 100%;
+  border-left: 2px solid #e3e3e3;
+  padding-bottom: 20px;
+}
+
+.sized {
+  max-width: 250px;
+}
+
+.container-push {
+  margin-top: 30px;
+}
+
+
+.image_box {
+  border-top: 2px solid #e3e3e3;
+  padding-top: 20px;
+
+  .image_box_inner {
+    border: 2px solid #e3e3e3;
+    float: left;
+    margin: 20px;
+    padding: 10px;
+  }
+
+}

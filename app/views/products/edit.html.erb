@@ -1,0 +1,15 @@
+<h2>Products</h2>
+<div class="well">
+  <h3>Edit Product: </h3>
+  <%= bootstrap_form_for(@product, :html => {:multipart => true}, layout: :horizontal, control_col: "col-sm-4") do |f| %>
+      <%= f.text_field :name %><br/>
+      <%= f.text_area :description %><br/>
+      <%= f.number_field :stock %><br/>
+      <%= f.number_field :serial %><br/>
+      <%= f.number_field :price, label: "Price (In cents)" %><br/>
+      <%= f.number_field :shipping, label: "Shipping Cost (In cents)" %><br/>
+      <%= f.text_field :order %><br/>
+      <%= f.file_field :image %><br/>
+      <span style="margin-left:10vw"><%= f.submit %></span><br/><br/>
+  <% end %>
+</div>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flat-Jack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag "https://js.stripe.com/v2/", "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon; charset=binary">
+  <link rel="stylesheet" href="css/cosmos.css" />
+  <link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+
+
+</head>
+<body>
+<nav class="navbar navbar-default">
+
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#droparea">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!--<a class="navbar-brand" href="index.html"><img height=25px src="logo.png"/></a>-->
+      <%#= image_tag 'logo.png' %>
+      <%= image_tag 'logo.png', :class => "top-icon navbar-brand" %>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="droparea">
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/"><b>Home</b></a></li>
+        <li><a href="blog"><b>Blog</b></a></li>
+        <!--<li><a href="press.html"><b>Press</b></a></li>-->
+        <li><a href="contact"><b>Contact</b></a></li>
+        <li><a href="order"><b>Order</b></a></li>
+        <!--<li><a href="cart.html"><b>Cart</b></a></li>-->
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+
+  </div>
+  <!-- /.container-fluid -->
+
+</nav>
+
+<div class="myborder"></div>
+    <%= yield %>
+<div class="myborder"></div>
+
+<div class="myfooter">
+  <div class="row">
+    <div class="col-md-2"><%= image_tag 'logo.png', :class => "bottom-icon" %></div>
+
+    <div class="col-md-2">Info@Flat-Jack.us</div>
+    <div class="col-md-1">(512) 484-4501</div>
+    <div class="col-md-3"></div>
+    <div class="col-md-3">
+      <div class="copyright">&copy; 2014 flat-jack<sup>&#174;</sup></div>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</div>
+
+</body>
+
+<script>
+    $('.titletext').prepend('<img src="img/yellowlines.png" style="height:15px; width:30px; margin-right:5px; padding-top:5px; float:left;" />');
+</script>
+
+</html>

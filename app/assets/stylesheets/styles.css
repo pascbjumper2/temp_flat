@@ -1,0 +1,206 @@
+body {
+	
+	min-width: 603px;
+	
+}
+
+.navbar {
+		
+	margin-bottom: 0px;
+		
+}
+
+.carousel-caption .background{
+	
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color:rgba(255,255,255,0.9);	
+	-webkit-filter: blur(20px);
+    -moz-filter: blur(20px);
+    -o-filter: blur(20px);
+    -ms-filter: blur(20px);
+    filter: blur(20px);
+    z-index: -1;
+    top: 0;
+
+}
+
+.carousel-caption h3, .carousel-caption h4 {
+	
+	color: #000000;
+	margin: 5px;
+	
+}
+
+.myborder {
+	
+	width: 100%;
+	height: 5px;
+	background-color: #fff700;
+		
+}
+
+p.titletext {
+	
+	font-weight:bold;
+	font-size:larger;
+	color: #000000;
+	
+}
+
+.steps {
+	
+	float: right;
+	
+}
+
+.carousel-inner {
+  -webkit-transform-style: preserve-3d;
+}
+
+.myfooter {
+	
+/* 	text-align: center; */
+	width: 100%;
+	padding: 20px;
+	text-align: center;
+	
+	
+}
+
+.maindiv {
+	
+	padding: 50px;
+	
+}
+
+.bigtitle {
+	
+	font-weight: bold;
+	font-size: x-large;
+	padding-bottom: 0px;
+	color: #000000;
+	
+}
+
+.seconddiv {
+	
+	padding-left: 30px;
+	
+}
+
+hr {
+	
+	margin: 0px;
+	margin-bottom: 15px;
+	
+}
+
+.pick {
+	
+	border-radius: 15px;
+	/*padding: 15px;
+	
+border-width: 1px;
+	border-style:solid;
+	border-color: #000000;
+*/
+	height: 350px;
+	margin-bottom: 15px;
+	position: relative;
+	
+}
+
+.sized {
+	min-width: 300px;
+}
+
+.centeredImage {
+	
+	text-align:center;
+    margin-top:0px;
+    margin-bottom:0px;
+    padding:0px;
+	
+}
+
+.centered {
+	
+	text-align:center;
+	
+}
+
+.bottomedout {
+	
+	bottom: 0px;
+	left: 0px;
+	margin-bottom: 20px;
+	position: absolute;
+	width: 100%;
+	
+}
+
+.bold {
+	
+	font-weight: bold;
+	font-size: larger;
+	
+}
+
+.post {
+	
+	border-radius: 15px;
+	padding: 15px;
+	border-width: 1px;
+	border-style:solid;
+	border-color: #b4b4b4;
+	margin-bottom: 15px;
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+
+.postfooter {
+	
+	color: #747474;
+	margin-bottom: 0px;
+	font-size: small;
+	margin-right: 0px;
+	
+}
+
+.date {
+	
+	font-size: small;
+	padding-top: 3px;
+	
+}
+
+.myfooter {
+	
+	color: #737373;
+	font-size: smaller;
+	
+}
+
+.copyright {
+	
+	color: #000000;
+	font-size: smaller;
+	text-align: right;
+	
+}
+
+
+
+a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
+}
+
+/*
+MAKE TO NOT AFFECT TOP NAVBAR
+ALSO NEED TO TAKE OUT THE UNDERLINE
+*/
