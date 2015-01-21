@@ -30,7 +30,7 @@
 
       <div class="tab-pane active" id="Products">
 
-        <h2>Products</h2>
+        <h1 style="margin-left:30px;">Products</h1>
         <div class="well">
             <h3>Add Product: </h3>
             <%= bootstrap_form_for(@product, :html => {:multipart => true}, layout: :horizontal, control_col: "col-sm-4") do |f| %>
@@ -69,7 +69,7 @@
       <!------------------------------------------------------ Product - END ----------------------------------------------------------------------->
       <!------------------------------------------------------ Content - START ----------------------------------------------------------------------->
       <div class="tab-pane" id="Content">
-        <h1>Content</h1>
+        <h1 style="margin-left:30px;">Content</h1>
 
         <div class="well">
           <%= bootstrap_form_for @content, controller: :contents, action: :create, layout: :inline do |content| %>
@@ -139,7 +139,7 @@
       <!------------------------------------------------------ Content - END ----------------------------------------------------------------------->
       <!------------------------------------------------------ Contact - START ----------------------------------------------------------------------->
       <div class="tab-pane" id="Contact">
-        <h1>Contact Info</h1>
+        <h1 style="margin-left:30px;">Contact Info</h1>
 
         <div class="well">
           <% if (@designs == nil) %>
@@ -167,7 +167,7 @@
       <!------------------------------------------------------ Contact - END ----------------------------------------------------------------------->
       <!------------------------------------------------------ Blog - START ----------------------------------------------------------------------->
       <div class="tab-pane" id="Blog">
-        <h1>Blog</h1>
+        <h1 style="margin-left:30px;">Blog</h1>
 
         <div class="well">
           <h4>New post</h4>
@@ -198,7 +198,7 @@
       <!------------------------------------------------------ Transactions - START ----------------------------------------------------------------------->
       <div class="tab-pane" id="Transactions">
 
-        <h3>Orders</h3>
+        <h1 style="margin-left:30px;">Orders</h1>
         <div class="container">
 
 
@@ -284,7 +284,7 @@
       <!------------------------------------------------------ Users - START ----------------------------------------------------------------------->
       <div class="tab-pane" id="Users" style="margin-bottom: 550px;">
 
-        <h1>Users</h1>
+        <h1 style="margin-left:30px;">Users</h1>
         <div class="container">
         <div class="panel panel-default">
 
