@@ -3,7 +3,7 @@ class AdminController < ApplicationController
 	before_filter :redirect
 
 	def redirect
-		redirect_to root_path unless current_user.try(:role) == "admin"
+		redirect_to '/users/sign_in/' unless current_user.try(:role) == "admin"
 	end
 
 	def index
