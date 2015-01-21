@@ -19,5 +19,20 @@ module AdminHelper
     end
   end
 
+  def complete_to_color(complete)
+    if complete == true
+      "green"
+    else
+      "red"
+    end
+  end
+
+  def complete_to_context(complete)
+    if complete == true
+      "Complete"
+    else
+      "Outstanding"
+    end
+  end
 
 end

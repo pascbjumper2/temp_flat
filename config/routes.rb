@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   get "admin" => "admin#index"
   get "articles" => "articles#index"
 
+
   post "visitors/receive" => "visitors#receive"
+  post "transactionns/:id" => "transactionns#post"
 
   devise_for :users
 

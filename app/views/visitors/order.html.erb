@@ -16,7 +16,7 @@
           <p class="centeredImage"><img src="<%= g.image.url %>"/></p><br />
           <p class="centered bold"><%= g.name %><sup>&#174;</sup></p>
           <p class="centered"><%= g.description.html_safe %></p>
-          <div class="bottomedout"><div class="centered"><a class="btn btn-warning" onclick="append_checkout(<%= g.price/100.00 %>, <%= g.shipping/100.00 %>, <%= g.id %>, '<%= g.name %>')" target="_blank">Add to Cart</a></div></div><!--Activate function with price, shipping price, and name-->
+          <div class="bottomedout"><div class="centered"><a class="btn btn-warning" onclick="append_checkout(<%= g.price %>, <%= g.shipping %>, <%= g.id %>, '<%= g.name %>')" target="_blank">Add to Cart</a></div></div><!--Activate function with price, shipping price, and name-->
           <p class="centered"><%= number_to_currency(g.price/100.00) %></p>
         </div>
       </div>
@@ -39,10 +39,10 @@
 
     $( document ).ready(function() {
         $( "#checkout" ).hide( );
-      $('#checkout-form').hide();
+      $('#checkout-form-box').hide();
 
       $('#checkout-button').click(function() {
-        $("#checkout-form").fadeIn();
+        $("#checkout-form-box").fadeIn();
       });
 
       Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
@@ -57,21 +57,21 @@
     function append_checkout(price, shipping, product_id, name){
         $( "#checkout" ).fadeIn(  );
         //alert("$" + price + " $" + shipping + product_id + name);
-        $( ".table  tbody" ).append( "<tr><td>" + name + "</td><td> $" + price + " + $" + shipping + " (Shipping)</td><td><a class='glyphicon glyphicon-remove pull-right' onclick='remove_ref(this, " + array_ref + ")' style='padding-right: 60px;'></a></td></tr>" );
+        $( ".table  tbody" ).append( "<tr><td>" + name + "</td><td> $" + (price/100.00).toFixed(2) + " + $" + (shipping/100.00).toFixed(2) + " (Shipping)</td><td><a class='glyphicon glyphicon-remove pull-right' onclick='remove_ref(this, " + array_ref + ", " + price + ", " + shipping + ")' style='padding-right: 60px;'></a></td></tr>" );
         array_ref++;
         total = total + price + shipping;
         checkout_array.push(product_id);
-        $("#total").text("Total: $" + total);
+        $("#total").text("Total: $" + (total/100).toFixed(2));
         $(".submit_to").val(checkout_array);
     }
 
     //Removes from cart by changing product_id in array to 0, and removing visible entry
-    function remove_ref(id, ref) {
+    function remove_ref(id, ref, price, shipping) {
         $(id).parent().parent().remove();
         checkout_array.splice(ref, 1, 0);
         $(".submit_to").val(checkout_array);
         total = total - price - shipping;
-        $("#total").text("Total: $" + total);
+        $("#total").text("Total: $" + (total/100).toFixed(2));
     }
 
     function stripe_handler(status, response) {
@@ -105,7 +105,7 @@
 
 
 
-<div id="checkout" class="container" style="margin-bottom: 50px;">
+<div id="checkout" class="container" style="margin-bottom: 0px;">
   <div class="row">
     <div class="panel panel-default">
       <div class="panel-heading" style="height:50px;">
@@ -126,22 +126,41 @@
   </div>
 </div>
 
-<%= bootstrap_form_for(:transaction, {url: "/visitors/receive", method: :post, html: {id: 'checkout-form'}}) do |f| %>
-  <%= f.hidden_field :products, class: 'submit_to' %>
-  <%= f.hidden_field :stripe_card_token %>
-  <%= f.text_field :name %>
-  <%= f.text_field :address %>
-  <%= f.text_field :city %>
-  <%= f.text_field :state %>
-  <%= f.text_field :zip %>
-  <%= f.text_field :number %>
-  <%= f.text_field :cvc %>
-  <%= f.select :month, 1..12 %>
-  <%= f.select :year, Date.today.year..10.years.from_now.year %>
-  <%= f.submit 'Submit', id: 'submit_transaction' %>
-<% end %>
+<div class="container" id="checkout-form-box">
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading" style="height:50px;">
+        <h5 class="panel-title pull-left" style="padding-top:7px;">
+          <span class="glyphicon glyphicon-shopping-cart"></span> Checkout
+        </h5>
+
+      </div>
+      <div class="panel-body">
+          <%= bootstrap_form_for(:transaction, {url: "/visitors/receive", method: :post, html: {id: 'checkout-form'}}) do |f| %>
+              <%= f.hidden_field :products, class: 'submit_to' %>
+              <%= f.hidden_field :stripe_card_token %>
+              <%= f.text_field :name %>
+              <%= f.text_field :email %>
+              <%= f.text_field :cell, label: "Telephone Number" %>
+              <%= f.text_field :address %>
+              <div class="col-sm-4" style="padding-left:0px;"><%= f.text_field :city %></div>
+              <div class="col-sm-4" style="padding:0px;"><%= f.text_field :state %></div>
+              <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :zip %></div>
+              <div class="col-sm-8" style="padding:0px;"><%= f.text_field :number, label: "Card Number" %></div>
+              <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :cvc, label: "CVC" %></div>
+              <div class="col-sm-8" style="padding:0px;"><%= f.select :month, 1..12 %></div>
+              <div class="col-sm-4" style="padding-right:0px;"><%= f.select :year, Date.today.year..10.years.from_now.year %></div>
+              <div class="col-sm-12" style="padding:0px;"><%= f.submit 'Submit', id: 'submit_transaction' %></div>
+          <% end %>
+        </div>
+    </div>
+  </div>
+</div>
 
 
+
+
+<!--, html: {id: 'checkout-form'}-->
 
 
 
@@ -149,24 +168,34 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Camper edition flat-jack<sup>&#174;</sup></h4>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-md-6">
-            <p>The well known process on a camp site:  supporting, jacking-up, stabilizing. The question for a leveling wedge: using a full automatic or manual support? We have a solution for our camper fans: the flat-jack® camper edition. Made with our reliable PU/PUR membrane, this edition was designed with all of the necessities for a camper in mind.</p>
-            <p><ul>
-            <li>Maximum load: verified up to 2.5 tons per wheel</li>
-            <li>Perfect for tire widths up to 255mm</li>
-            <li>Operating pressure 0.8 – 1.3 bar/8.7 to 18.85 psi</li>
-            <li>Maximum pressure: 1.5 bar/ 21.75 psi</li>
-            <li>High quality valve</li>
-            <li>Extremely light and space saving</li>
-            <li>Tire protection and tension reduction in the chassis</li>
-            <li>Equipped with a special inner construction for camper vehicles (double-walled high frequency welded)</li>
-            <li>Can be used as leveling system on uneven ground (1 flat-jack®camper up to 6 cm, 2 flat-jack® camper air-pillows piled up to 12 cm)</li>
-          </ul></p>
+            <p>The well known process on a camp site:  supporting, jacking-up, stabilizing. The question for a leveling
+              wedge: using a full automatic or manual support? We have a solution for our camper fans: the flat-jack®
+              camper edition. Made with our reliable PU/PUR membrane, this edition was designed with all of the
+              necessities for a camper in mind.</p>
+
+            <p>
+            <ul>
+              <li>Maximum load: verified up to 2.5 tons per wheel</li>
+              <li>Perfect for tire widths up to 255mm</li>
+              <li>Operating pressure 0.8 – 1.3 bar/8.7 to 18.85 psi</li>
+              <li>Maximum pressure: 1.5 bar/ 21.75 psi</li>
+              <li>High quality valve</li>
+              <li>Extremely light and space saving</li>
+              <li>Tire protection and tension reduction in the chassis</li>
+              <li>Equipped with a special inner construction for camper vehicles (double-walled high frequency welded)
+              </li>
+              <li>Can be used as leveling system on uneven ground (1 flat-jack®camper up to 6 cm, 2 flat-jack® camper
+                air-pillows piled up to 12 cm)
+              </li>
+            </ul>
+            </p>
           </div>
           <div class="col-md-6">
             <img src="img/flatjack30.jpg" width="350px"/>
@@ -174,7 +203,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <a class="btn btn-warning" href="#" target="_blank">Add to Cart</a>
+        <a class="btn btn-warning" href="#">Close</a>
       </div>
     </div>
   </div>

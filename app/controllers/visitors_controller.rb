@@ -46,10 +46,19 @@ class VisitorsController < ApplicationController
         # rescue in case of stripe error
         # Set the transaction token as the charge id in case we want to view this later
         transaction.stripe_token = charge.id
+        transaction.first_name = charge.card.name
+        transaction.address = charge.card.address_line1
+        transaction.address_2 = charge.card.address_line2
+        transaction.city = charge.card.address_city
+        transaction.state = charge.card.address_state
+        transaction.zip = charge.card.address_zip
+        b = params["transaction"]
+        transaction.email = b["email"]
+        transaction.phone = b["cell"]
         transaction.save
       end
 
-      redirect_to checkout_path(:id => transaction.id)
+      redirect_to checkout_path
 
     else
       redirect_to :back
