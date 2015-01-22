@@ -19,6 +19,7 @@ gem 'pundit'
 gem 'paperclip'
 gem 'ckeditor'
 gem 'bootstrap_form'
+gem 'mysql2'
 
 
 group :development do
