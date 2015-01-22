@@ -60,7 +60,7 @@
 <div class="myfooter">
   <div class="row">
     <div class="col-md-2"><%= image_tag 'logo.png', :class => "bottom-icon" %></div>
-
+    <% @designs = Design.first %>
     <div class="col-md-2"><%= @designs.email %></div>
     <div class="col-md-1"><%= number_to_phone(@designs.phone, area_code: true) %></div>
     <div class="col-md-3"></div>
