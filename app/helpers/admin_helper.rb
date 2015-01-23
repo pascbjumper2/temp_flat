@@ -12,11 +12,13 @@ module AdminHelper
   end
 
   def img_to_col_count(catcount)
-    if Gallery.where(:content_id => catcount).count == 0
-      "6"
-    else
-      "12"
+    galcat = 12
+    Content.where(:category => catcount).each do |x|
+      if x.galleries.count != 0
+        galcat = "6"
+      end
     end
+    galcat
   end
 
   def complete_to_color(complete)

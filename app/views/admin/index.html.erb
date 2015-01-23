@@ -118,7 +118,7 @@
 
                       <% Gallery.where(:content_id => f).order(:order).each do |h| %>
                           <div class="image_box_inner">
-                            <p><%= h.order.ordinalize %> image | Width: <%= h.width %>px</p>
+                            <p>Image <%= h.order %> | Width: <%= h.width %>px</p>
                             <%= link_to "Delete", gallery_path(h), method: :delete, data: {confirm: "Are you sure you wish to delete this image? It can not be restored."} %>
                             <%= image_tag h.image.url, :style => "height: 200px; margin-left:0px;" %>
                           </div>

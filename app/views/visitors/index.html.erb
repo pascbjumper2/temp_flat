@@ -107,7 +107,7 @@
                         <div align="center">
                           <% @content_items.where(:category => catcount.to_s).order(:order).each do |f| %>
                               <% Gallery.where(:content_id => f).order(:order).each do |h| %>
-                                    <img src="<%= h.image.url %>" width="<%= h.width %>" />
+                                    <img style="padding-bottom: 20px;" src="<%= h.image.url %>" width="<%= h.width %>" />
                               <% end %>
                           <% end %>
                         </div>
