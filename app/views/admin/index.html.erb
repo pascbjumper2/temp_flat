@@ -217,7 +217,7 @@
                   <p><b>Email: </b><%= f.email || "N/A" %></p>
                 </div>
                 <div class="col-md-6">
-                  <p><b>Status: </b><span style=" margin-right:30px; color:<%= complete_to_color(f.complete) %>;"><%= complete_to_context(f.complete) %></span> <%= link_to 'Mark as completed', transactionn_path(f), method: :post %> </p>
+                  <p><b>Status: </b><span style=" margin-right:30px; color:<%= complete_to_color(f.complete) %>;"><%= complete_to_context(f.complete) %></span> <%= link_to 'Mark as completed', transactionn_path(f), method: :post unless f.complete == true %> </p>
                   <p><b>Date: </b><%= f.created_at.strftime("%Y-%m-%d") %></p>
                   <p><b>Order size: </b><%= f.purchases.count %></p>
                   <p><b>Total: </b><%= number_to_currency((f.purchases.sum(:price) + f.purchases.sum(:shipping))/100.00) %></p>
