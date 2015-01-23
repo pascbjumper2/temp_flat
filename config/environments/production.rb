@@ -91,4 +91,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  Paperclip::Attachment.default_options[:url] = ':class/:id/:style.:extension'
+  Paperclip::Attachment.default_options[:path] = '/opt/images/:class/:id_partition/:style.:extension'
+
+
 end
