@@ -31,7 +31,8 @@
       </button>
       <!--<a class="navbar-brand" href="index.html"><img height=25px src="logo.png"/></a>-->
       <%#= image_tag 'logo.png' %>
-      <%= image_tag 'logo.png', :class => "top-icon navbar-brand" %>
+      <!--<a href="/"><%#= image_tag 'logo.png', :class => "top-icon navbar-brand" %></a>-->
+      <img href="/" alt="Logo" class="top-icon navbar-brand" src="/assets/logo-d4bf43ff9880030c57ab34ae1a60db07.png">
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -60,18 +61,52 @@
 <div class="myfooter">
   <div class="row">
     <div class="col-md-2"><%= image_tag 'logo.png', :class => "bottom-icon" %></div>
-    <% @designs = Design.first %>
+    <% if Design.count > 0 %>
+        <% @designs = Design.first %>
     <div class="col-md-2"><%= @designs.email %></div>
     <div class="col-md-1"><%= number_to_phone(@designs.phone, area_code: true) %></div>
+    <% end %>
     <div class="col-md-3"></div>
     <div class="col-md-3">
       <div class="copyright">&copy; 2014 flat-jack<sup>&#174;</sup></div>
     </div>
-    <div class="col-md-1"></div>
+    <div class="col-md-1">
+      <div id="fb-root"></div>
+      <div class="fb-like" data-href="https://www.facebook.com/pages/Flat-Jack/774414999312633" data-width="120" data-layout="button" data-action="like" data-show-faces="false" data-share="true"></div>
+    </div>
   </div>
 </div>
 
+
+
 </body>
+
+
+
+
+
+
+
+
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    $( document ).ready(function() {
+        $('.navbar-toggle').click();
+    });
+</script>
+
+
+
+
+
+
 
 <script>
     $('.titletext').prepend('<img src="img/yellowlines.png" style="height:15px; width:30px; margin-right:5px; padding-top:5px; float:left;" />');

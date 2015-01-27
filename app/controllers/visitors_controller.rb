@@ -10,7 +10,7 @@ class VisitorsController < ApplicationController
   end
 
   def contact
-    @designs = Design.first
+    @designs = Design.all
   end
 
   def blog

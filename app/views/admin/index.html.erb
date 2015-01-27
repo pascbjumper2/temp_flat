@@ -141,27 +141,48 @@
       <div class="tab-pane" id="Contact">
         <h1 style="margin-left:30px;">Contact Info</h1>
 
+
         <div class="well">
-          <% if (@designs == nil) %>
-              <%= bootstrap_form_for @design, layout: :horizontal, control_col: "col-sm-6" do |h| %>
-                  <%#= h.text_field :sitename %>
-                  <%#= h.text_field :name %>
-                  <%= h.text_field :email %>
-                  <%= h.text_field :phone %>
-                  <%= h.text_field :address %>
-                  <span style="margin-left:10vw"><%= h.submit %></span>
-              <% end %>
-          <% else %>
-              <%= bootstrap_form_for @designs, layout: :horizontal, control_col: "col-sm-6", action: :update do |i| %>
-                  <%#= i.text_field :sitename %>
-                  <%#= i.text_field :name %>
-                  <%= i.text_field :email %>
-                  <%= i.text_field :phone %>
-                  <%= i.text_field :address %>
-                  <span style="margin-left:10vw"><%= i.submit %></span>
-              <% end %>
+          <h4>New contact</h4>
+
+          <%= bootstrap_form_for @design, layout: :horizontal, control_col: "col-sm-6" do |i| %>
+              <%#= i.text_field :sitename %>
+              <%= i.text_field :name %>
+              <%= i.text_field :email %>
+              <%= i.text_field :phone %>
+              <%= i.text_field :address %>
+              <span style="margin-left:10vw"><%= i.submit "New Contact Block" %></span>
           <% end %>
+
         </div>
+
+
+
+        <% @designs.each do |f| %>
+            <div class="well">
+              <h3><%= f.name %></h3>
+              <p><%= number_to_phone(f.phone) %></p>
+              <p><%= f.email %></p>
+              <p><%= f.address.html_safe %></p>
+              <%= link_to "Edit Article", edit_design_path(f) %> |
+              <%= link_to "Delete", design_path(f), method: :delete, data: {confirm: "Are you sure you wish to delete this contact? It can not be restored."} %>
+            </div>
+        <% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
 
       <!------------------------------------------------------ Contact - END ----------------------------------------------------------------------->

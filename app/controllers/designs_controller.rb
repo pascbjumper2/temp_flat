@@ -15,9 +15,19 @@ class DesignsController < ApplicationController
     end
   end
 
+  def edit
+    @design = Design.find(params[:id])
+  end
+
+  def destroy
+    @design = Design.find(params[:id])
+    @design.destroy
+    flash[:notice] = "Contact block removed!"
+    redirect_to admin_path
+  end
 
   def update
-    @designs = Design.first
+    @designs = Design.find(params[:id])
     if @designs.update_attributes(design_params)
       redirect_to admin_path, notice: "The contact information has been successfully updated."
     else

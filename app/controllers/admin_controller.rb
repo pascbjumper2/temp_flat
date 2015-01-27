@@ -13,7 +13,7 @@ class AdminController < ApplicationController
 		@article = Article.new
 		@articles = Article.order("created_at DESC")
 		@design = Design.new
-		@designs = Design.first
+		@designs = Design.all
 		@content = Content.new
 		@content_items = Content.all
 		@gallery = Gallery.new

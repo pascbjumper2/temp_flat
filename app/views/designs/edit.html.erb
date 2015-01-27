@@ -1,0 +1,11 @@
+<div class="well">
+  <h4>Edit contact</h4>
+  <%= bootstrap_form_for @design, layout: :horizontal, action: :update, control_col: "col-sm-6" do |i| %>
+      <%#= i.text_field :sitename %>
+      <%= i.text_field :name %>
+      <%= i.text_field :email %>
+      <%= i.text_field :phone %>
+      <%= i.text_field :address %>
+      <span style="margin-left:10vw"><%= i.submit "Edit Contact Block" %></span>
+  <% end %>
+</div>
