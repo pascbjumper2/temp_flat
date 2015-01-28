@@ -97,6 +97,10 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
+    if($('.navbar-toggle').css('display') !='none'){
+        $(".navbar-toggle").trigger( "click" );
+    }
+
     $( document ).ready(function() {
         $('.navbar-toggle').click();
     });

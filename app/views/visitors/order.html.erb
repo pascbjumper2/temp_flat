@@ -32,10 +32,8 @@
 <script>
     var total = 0;
     var array_ref = 0;
-
+    var validated = true;
     var checkout_array = [];
-
-
 
     $( document ).ready(function() {
         $( "#checkout" ).hide( );
@@ -46,9 +44,68 @@
       });
 
       Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
-      $('#submit_transaction').click(function(e) {
-        e.preventDefault();
-        process_card();
+
+      function validator() {
+          if( $(".name_space").val().length === 0 ) {
+              $(".name_space").addClass('lit');
+              validated = false;
+          }
+
+          if ( $(".email_space").val().indexOf("@") <= 0 || $(".email_space").val().indexOf(".") <= 2 ) {
+              $(".email_space").addClass('lit');
+              validated = false;
+          }
+
+          if( $(".phone_space").val().length < 10 || !$.isNumeric( $(".phone_space").val() )) {
+              $(".phone_space").addClass('lit');
+              validated = false;
+          }
+
+          if( $(".address_space").val().length === 0 ) {
+              $(".address_space").addClass('lit');
+              validated = false;
+          }
+
+          if( $(".city_space").val().length === 0 ) {
+              $(".city_space").addClass('lit');
+              validated = false;
+          }
+
+          if( $(".state_space").val().length === 0 ) {
+              $(".state_space").addClass('lit');
+              validated = false;
+          }
+
+          if( $(".zip_space").val().length < 5 || !$.isNumeric( $(".phone_space").val() )) {
+              $(".zip_space").addClass('lit');
+              validated = false;
+          }
+
+          if( $(".number_space").val().length < 16 || !$.isNumeric( $(".phone_space").val() )) {
+              $(".number_space").addClass('lit');
+              validated = false;
+          }
+
+          if( $(".cvc_space").val().length < 3 || !$.isNumeric( $(".phone_space").val() )) {
+              $(".cvc_space").addClass('lit');
+              validated = false;
+          }
+
+          return validated
+      }
+
+
+        $('#submit_transaction').click(function(e) {
+            //Run function to validate form. If it returns true, continue
+
+            e.preventDefault();
+            if (validator()) {
+              process_card();
+            } else {
+              alert("The form could not be submitted.\nPlease check to make sure that all fields are filled correctly.");
+            }
+            //Reset validation Bool
+            validated = true;
       });
     });
 
@@ -139,15 +196,16 @@
           <%= bootstrap_form_for(:transaction, {url: "/visitors/receive", method: :post, html: {id: 'checkout-form'}}) do |f| %>
               <%= f.hidden_field :products, class: 'submit_to' %>
               <%= f.hidden_field :stripe_card_token %>
-              <%= f.text_field :name %>
-              <%= f.text_field :email %>
-              <%= f.text_field :cell, label: "Telephone Number" %>
-              <%= f.text_field :address %>
-              <div class="col-sm-4" style="padding-left:0px;"><%= f.text_field :city %></div>
-              <div class="col-sm-4" style="padding:0px;"><%= f.text_field :state %></div>
-              <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :zip %></div>
-              <div class="col-sm-8" style="padding:0px;"><%= f.text_field :number, label: "Card Number" %></div>
-              <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :cvc, label: "CVC" %></div>
+              <%= f.text_field :name, class: "name_space" %>
+              <%= f.text_field :email, class: "email_space" %>
+              <%= f.text_field :cell, class: "phone_space", label: "Telephone Number" %>
+              <%= f.text_field :address, class: "address_space" %>
+              <div class="col-sm-4" style="padding-left:0px;"><%= f.text_field :city, class: "city_space" %></div>
+              <div class="col-sm-4" style="padding:0px;"><%= f.text_field :state, class: "state_space" %></div>
+              <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :zip, class: "zip_space" %></div>
+              <div class="col-sm-12" style="padding-top:15px;"><hr /></div>
+              <div class="col-sm-8" style="padding:0px;"><%= f.text_field :number, class: "number_space", label: "Card Number" %></div>
+              <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :cvc, class: "cvc_space", label: "CVC" %></div>
               <div class="col-sm-8" style="padding:0px;"><%= f.select :month, 1..12 %></div>
               <div class="col-sm-4" style="padding-right:0px;"><%= f.select :year, Date.today.year..10.years.from_now.year %></div>
               <div class="col-sm-12" style="padding:0px;"><%= f.submit 'Submit', id: 'submit_transaction' %></div>
@@ -159,12 +217,14 @@
 
 
 <script>
-
+    $( ".form-control" ).keypress(function() {
+        $(this).removeClass("lit");
+    });
 </script>
 
 
 <style>
-    .form-control {
+    .lit {
         border-color:red;
     }
 </style>
