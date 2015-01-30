@@ -16,11 +16,66 @@
           <p class="centeredImage"><img src="<%= g.image.url %>"/></p><br />
           <p class="centered bold"><%= g.name %><sup>&#174;</sup></p>
           <p class="centered"><%= g.description.html_safe %></p>
-          <div class="bottomedout"><div class="centered"><a class="btn btn-warning" onclick="append_checkout(<%= g.price %>, <%= g.shipping %>, <%= g.id %>, '<%= g.name %>')" target="_blank">Add to Cart</a></div></div><!--Activate function with price, shipping price, and name-->
-          <p class="centered"><%= number_to_currency(g.price/100.00) %></p>
+          <p class="centered"><%= number_to_currency(g.price/100.00) %> each</p>
+
+
+
+
+
+          <div class="bottomedout">
+            <div class="centered">
+              <!--<a class="btn btn-warning" onclick="append_checkout(<%= g.price %>, <%= g.shipping %>, <%= g.id %>, '<%= g.name %>')" target="_blank">Add to Cart</a>-->
+
+
+
+
+              <div class="btn-group">
+                <button type="button" class="btn btn-warning host-<%= g.id %>" value="<%= g.size || 4 %>"  onclick="append_checkout(<%= g.price %>, <%= g.shipping %>, <%= g.id %>, '<%= g.name %>')">Add <%= g.size || 4 %> to cart</button>
+                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a onclick="changeval('<%= g.id %>', 1)" href="#">1</a></li>
+                  <li><a onclick="changeval('<%= g.id %>', 2)" href="#">2</a></li>
+                  <li><a onclick="changeval('<%= g.id %>', 3)" href="#">3</a></li>
+                  <li><a onclick="changeval('<%= g.id %>', 4)" href="#">4</a></li>
+                  <li><a onclick="changeval('<%= g.id %>', 5)" href="#">5</a></li>
+                  <li><a onclick="changeval('<%= g.id %>', 6)" href="#">6</a></li>
+                </ul>
+              </div>
+
+
+
+
+            </div>
+          </div><!--Activate function with price, shipping price, and name-->
+
+
         </div>
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <% end %>
+
+
+
+
+
 
     </div>
   </div>
@@ -34,6 +89,17 @@
     var array_ref = 0;
     var validated = true;
     var checkout_array = [];
+
+
+    //Adjusts value in add to cart button
+    function changeval(id, val) {
+        $( ".host-" + id ).text("Add " + val + " to cart").val( val );
+    }
+
+
+
+    //Enables Bootstrap's dropdown functionality.
+    $('.dropdown-toggle').dropdown()
 
     $( document ).ready(function() {
         $( "#checkout" ).hide( );
@@ -112,14 +178,27 @@
 
     //Adds new products to checkout cart
     function append_checkout(price, shipping, product_id, name){
-        $( "#checkout" ).fadeIn(  );
-        //alert("$" + price + " $" + shipping + product_id + name);
-        $( ".table  tbody" ).append( "<tr><td>" + name + "</td><td> $" + (price/100.00).toFixed(2) + " + $" + (shipping/100.00).toFixed(2) + " (Shipping)</td><td><a class='glyphicon glyphicon-remove pull-right' onclick='remove_ref(this, " + array_ref + ", " + price + ", " + shipping + ")' style='padding-right: 60px;'></a></td></tr>" );
-        array_ref++;
-        total = total + price + shipping;
-        checkout_array.push(product_id);
-        $("#total").text("Total: $" + (total/100).toFixed(2));
-        $(".submit_to").val(checkout_array);
+
+
+        loop_count = $(".host-"+product_id).val();
+
+        while ( loop_count !== 0)
+        {
+
+            $( "#checkout" ).fadeIn(  );
+            //alert("$" + price + " $" + shipping + product_id + name);
+            $( ".table  tbody" ).append( "<tr><td>" + name + "</td><td> $" + (price/100.00).toFixed(2) + " + $" + (shipping/100.00).toFixed(2) + " (Shipping)</td><td><a class='glyphicon glyphicon-remove pull-right' onclick='remove_ref(this, " + array_ref + ", " + price + ", " + shipping + ")' style='padding-right: 60px;'></a></td></tr>" );
+            array_ref++;
+            total = total + price + shipping;
+            checkout_array.push(product_id);
+            $("#total").text("Total: $" + (total/100).toFixed(2));
+            $(".submit_to").val(checkout_array);
+
+            loop_count --;
+
+        }
+
+
     }
 
     //Removes from cart by changing product_id in array to 0, and removing visible entry

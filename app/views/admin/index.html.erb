@@ -36,6 +36,7 @@
             <%= bootstrap_form_for(@product, :html => {:multipart => true}, layout: :horizontal, control_col: "col-sm-4") do |f| %>
                 <%= f.text_field :name %><br/>
                 <%= f.text_area :description %><br/>
+                <%= f.number_field :size, label: "Default # in bundle" %><br/>
                 <%= f.number_field :stock %><br/>
                 <%= f.number_field :serial %><br/>
                 <%= f.number_field :price, label: "Price (In cents)" %><br/>
@@ -50,6 +51,7 @@
             <div class="well">
                 <p>Name: <%= g.name %></p>
                 <p>Description: <%= g.description.html_safe %></p>
+                <p># in bundle: <%= g.size %></p>
                 <p># in Stock: <%= g.stock %></p>
                 <p>Serial #: <%= g.serial %></p>
                 <p>Price: <%= number_to_currency(g.price/100.00) %></p>
