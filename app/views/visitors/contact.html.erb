@@ -6,7 +6,7 @@
           <div class="seconddiv col-sm-4">
             <h3><%= f.name %></h3><br />
             <p class="titletext">Email</p> &nbsp;&nbsp;&nbsp;&nbsp;<%= f.email %><br /><br />
-            <p class="titletext">Phone</p> &nbsp;&nbsp;&nbsp;&nbsp;<%= f.phone %><br /><br />
+            <p class="titletext">Phone</p> &nbsp;&nbsp;&nbsp;&nbsp;<%= number_to_phone(f.phone, area_code: true) %><br /><br />
             <p class="titletext">Address</p> &nbsp;&nbsp;&nbsp;&nbsp;<%= f.address.html_safe %><br /><br />
           </div>
       <% end %>
