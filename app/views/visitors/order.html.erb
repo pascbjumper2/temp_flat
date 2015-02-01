@@ -19,7 +19,7 @@
           <p class="centered"><%= number_to_currency(g.price/100.00) %> each</p>
 
 
-
+          <%#= g.size %>
 
 
           <div class="bottomedout">
@@ -121,6 +121,12 @@
               $(".email_space").addClass('lit');
               validated = false;
           }
+
+//          if ( $(".email_space").val().indexOf("hotmail") >= 1 || $(".email_space").val().indexOf("live") >= 1) {
+//              $(".email_space").addClass('lit');
+//              alert("Hotmail and Live addresses are not currently supported!\nPlease try another address.");
+//              validated = false;
+//          }
 
           if( $(".phone_space").val().length < 10 || !$.isNumeric( $(".phone_space").val() )) {
               $(".phone_space").addClass('lit');

@@ -1,0 +1,33 @@
+
+<h1 style="text-align: center; font-size: 25px;">Flat-Jack</h1>
+<p style="font-size: 18px;"><b>Name:</b> <%= @record.first_name %></p>
+<p style="font-size: 18px;"><b>Shipping Address:</b> <%= @record.address %>, <%= @record.zip %>, <%= @record.city %>, <%= @record.state %></p>
+<p style="font-size: 14px;">If this information is incorrect, contact <%= Design.first.email %></p>
+<br />
+<div style="border-style:solid; border-width: 2px; border-radius: 12px; max-width: 600px; padding:12px; margin-left:auto; margin-right:auto; background-color: #ddd;">
+
+  <% total = 0 %>
+  <table style="width:100%">
+    <% @record.products.split(',').each do |x|  %>
+        <% next if x == '0' %>
+        <% product = Product.find(x) %>
+        <tr>
+          <td><%=  product.name %></td>
+          <td>Serial: #<%= product.serial %></td>
+          <td>Price: <%= number_to_currency(product.price/100.00 ) %> + <%= number_to_currency(product.shipping/100.00 ) %> (Shipping)</td>
+        </tr>
+        <% total = total + product.price + product.shipping %>
+    <% end %>
+  </table>
+  <p>Total: <%= number_to_currency(total/100.00) %></p>
+
+</div>
+
+
+
+
+
+
+
+
+

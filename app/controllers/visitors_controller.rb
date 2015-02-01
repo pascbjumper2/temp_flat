@@ -55,7 +55,9 @@ class VisitorsController < ApplicationController
         b = params["transaction"]
         transaction.email = b["email"]
         transaction.phone = b["cell"]
+        @record = transaction
         transaction.save
+        ModelMailer.new_record_notification(@record).deliver
       end
 
       redirect_to checkout_path
