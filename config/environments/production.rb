@@ -74,7 +74,7 @@ Rails.application.configure do
       :port => 587,
       :domain => "flat-jack.us",
       :user_name => "postmaster@flat-jack.us",
-      :password => "Instrx1!",
+      :password => ENV["MAIL_PASSWORD"],
       :enable_starttls_auto => true
   }
 
