@@ -27,6 +27,6 @@ production:
   database: flatjack_production
   pool: 5
   username: root
-  password: ENV['DB_PASSWORD']
+  password: Instrx1!
   host: localhost
   port: 3306
