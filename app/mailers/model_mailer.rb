@@ -1,5 +1,5 @@
 class ModelMailer < ActionMailer::Base
-  default from: "postmaster@flat-jack.us"
+  default from: "postmaster@flatjack.com"
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
