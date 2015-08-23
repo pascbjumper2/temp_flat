@@ -72,8 +72,8 @@ Rails.application.configure do
       :authentication => :plain,
       :address => "smtp.mailgun.org",
       :port => 587,
-      :domain => "flat-jack.us",
-      :user_name => "postmaster@flat-jack.us",
+      :domain => "flatjack.com",
+      :user_name => "postmaster@flatjack.com",
       :password => ENV["MAIL_PASSWORD"],
       :enable_starttls_auto => true
   }
