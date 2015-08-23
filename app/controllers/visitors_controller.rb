@@ -1,4 +1,6 @@
 class VisitorsController < ApplicationController
+  require "net/http"
+  require "uri"
 
   def index
 
@@ -58,6 +60,10 @@ class VisitorsController < ApplicationController
         @record = transaction
         transaction.save
         ModelMailer.new_record_notification(@record).deliver
+
+        uri = URI.parse 'http://textbelt.com/text'
+        Net::HTTP.post_form(uri, {'number' => ENV['PHONE_NUMBER'], 'message' => 'A purchase has been made at flatjack.com'})
+
       end
 
       redirect_to checkout_path
