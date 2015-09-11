@@ -65,7 +65,7 @@ class VisitorsController < ApplicationController
         Net::HTTP.post_form(uri, {'number' => ENV['PHONE_NUMBER'], 'message' => 'A purchase has been made at flatjack.com'})
 
       end
-
+      flash[:notice] = "There was an issue placing your order."
       redirect_to checkout_path
 
     else
