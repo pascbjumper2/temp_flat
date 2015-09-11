@@ -107,6 +107,7 @@
 
       $('#checkout-button').click(function() {
         $("#checkout-form-box").fadeIn();
+        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
       });
 
       Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
@@ -289,7 +290,7 @@
               <div class="col-sm-4" style="padding:0px;"><%= f.text_field :state, class: "state_space" %></div>
               <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :zip, class: "zip_space" %></div>
               <div class="col-sm-12" style="padding-top:15px;"><hr /></div>
-              <div class="col-sm-8" style="padding:0px;"><%= f.text_field :number, class: "number_space", label: "Card Number" %></div>
+              <div class="col-sm-8" style="padding:0px;"><%= f.text_field :number, class: "number_space", label: "Card Number (numbers only)" %></div>
               <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :cvc, class: "cvc_space", label: "CVC" %></div>
               <div class="col-sm-8" style="padding:0px;"><%= f.select :month, 1..12 %></div>
               <div class="col-sm-4" style="padding-right:0px;"><%= f.select :year, Date.today.year..10.years.from_now.year %></div>
