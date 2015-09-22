@@ -25,6 +25,8 @@ class VisitorsController < ApplicationController
 
   def receive
     transaction = Transactionn.new(transaction_params)
+
+    # If the cart isn't empty, record the transaction
     if transaction.products.present?
       transaction.products.split(',').each do |x|
         next if x == '0'
@@ -37,41 +39,52 @@ class VisitorsController < ApplicationController
         purchase.save
         transaction.save
       end
+
       # rescue in case of stripe error
       if transaction.stripe_card_token
-        charge = Stripe::Charge.create(
-          :amount => transaction.purchases.map(&:total).sum,
-          :currency => 'usd',
-          :card => transaction.stripe_card_token, # obtained with Stripe.js
-          :description => "Charge for #{transaction.purchases.map(&:name).to_sentence}"
-        )
+        redirect_path =  checkout_path
+        stripe_errors = nil
+        begin
+          charge = Stripe::Charge.create(
+            :amount => transaction.purchases.map(&:total).sum,
+            :currency => 'usd',
+            :card => transaction.stripe_card_token, # obtained with Stripe.js
+            :description => "Charge for #{transaction.purchases.map(&:name).to_sentence}"
+          )
+
+          # Set the transaction token as the charge id in case we want to view this later
+          transaction.stripe_token = charge.id
+          transaction.first_name = charge.card.name
+          transaction.address = charge.card.address_line1
+          transaction.address_2 = charge.card.address_line2
+          transaction.city = charge.card.address_city
+          transaction.state = charge.card.address_state
+          transaction.zip = charge.card.address_zip
+          b = params["transaction"]
+          transaction.email = b["email"]
+          transaction.phone = b["cell"]
+          @record = transaction
+          transaction.save
+          ModelMailer.new_record_notification(@record).deliver
+
+          uri = URI.parse 'http://textbelt.com/text'
+          Net::HTTP.post_form(uri, {'number' => ENV['PHONE_NUMBER'], 'message' => 'A purchase has been made at flatjack.com'})
+
+        rescue Stripe::InvalidRequestError,
+               Stripe::AuthenticationError,
+               Stripe::APIConnectionError,
+               Stripe::StripeError => e
+          #Send Josh a text
+          stripe_errors = e
+          redirect_path =  order_path
+        end
 
 
-        # Set the transaction token as the charge id in case we want to view this later
-        transaction.stripe_token = charge.id
-        transaction.first_name = charge.card.name
-        transaction.address = charge.card.address_line1
-        transaction.address_2 = charge.card.address_line2
-        transaction.city = charge.card.address_city
-        transaction.state = charge.card.address_state
-        transaction.zip = charge.card.address_zip
-        b = params["transaction"]
-        transaction.email = b["email"]
-        transaction.phone = b["cell"]
-        @record = transaction
-        transaction.save
-        ModelMailer.new_record_notification(@record).deliver
 
-        uri = URI.parse 'http://textbelt.com/text'
-        Net::HTTP.post_form(uri, {'number' => ENV['PHONE_NUMBER'], 'message' => 'A purchase has been made at flatjack.com'})
 
-      else
-        render order_path
-        flash[:notice] = "There was an issue placing your order."
       end
-      redirect_to checkout_path
-    else
-      redirect_to :back
+      flash[:danger] = 'Error: ' + e.to_s if stripe_errors
+      redirect_to redirect_path
     end
 
 
@@ -86,6 +99,5 @@ class VisitorsController < ApplicationController
     def transaction_params
       params.require(:transaction).permit(:stripe_card_token, :products)
     end
-
 
 end
