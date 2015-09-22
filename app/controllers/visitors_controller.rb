@@ -37,7 +37,7 @@ class VisitorsController < ApplicationController
         purchase.save
         transaction.save
       end
-
+      # rescue in case of stripe error
       if transaction.stripe_card_token
         charge = Stripe::Charge.create(
           :amount => transaction.purchases.map(&:total).sum,
@@ -45,7 +45,8 @@ class VisitorsController < ApplicationController
           :card => transaction.stripe_card_token, # obtained with Stripe.js
           :description => "Charge for #{transaction.purchases.map(&:name).to_sentence}"
         )
-        # rescue in case of stripe error
+
+
         # Set the transaction token as the charge id in case we want to view this later
         transaction.stripe_token = charge.id
         transaction.first_name = charge.card.name
@@ -64,10 +65,11 @@ class VisitorsController < ApplicationController
         uri = URI.parse 'http://textbelt.com/text'
         Net::HTTP.post_form(uri, {'number' => ENV['PHONE_NUMBER'], 'message' => 'A purchase has been made at flatjack.com'})
 
+      else
+        render order_path
+        flash[:notice] = "There was an issue placing your order."
       end
-      flash[:notice] = "There was an issue placing your order."
       redirect_to checkout_path
-
     else
       redirect_to :back
     end
