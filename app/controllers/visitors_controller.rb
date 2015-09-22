@@ -26,7 +26,7 @@ class VisitorsController < ApplicationController
   def receive
     transaction = Transactionn.new(transaction_params)
 
-    # If the cart isn't empty, record the transaction
+    # Unless the cart is empty, record the transaction
     if transaction.products.present?
       transaction.products.split(',').each do |x|
         next if x == '0'
@@ -89,10 +89,7 @@ class VisitorsController < ApplicationController
           stripe_errors = e
           redirect_path =  order_path
         end
-
-
-
-
+        
       end
       flash[:danger] = 'Error: ' + e.to_s if stripe_errors
       redirect_to redirect_path
