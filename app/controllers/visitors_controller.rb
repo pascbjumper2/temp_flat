@@ -42,8 +42,11 @@ class VisitorsController < ApplicationController
 
       # rescue in case of stripe error
       if transaction.stripe_card_token
+
+        # Define default errors and redirect path
         redirect_path =  checkout_path
         stripe_errors = nil
+
         begin
           charge = Stripe::Charge.create(
             :amount => transaction.purchases.map(&:total).sum,
@@ -54,6 +57,8 @@ class VisitorsController < ApplicationController
 
           # Set the transaction token as the charge id in case we want to view this later
           transaction.stripe_token = charge.id
+
+          # Save the user's data
           transaction.first_name = charge.card.name
           transaction.address = charge.card.address_line1
           transaction.address_2 = charge.card.address_line2
@@ -65,16 +70,22 @@ class VisitorsController < ApplicationController
           transaction.phone = b["cell"]
           @record = transaction
           transaction.save
+
+          # Email user a receipt
           ModelMailer.new_record_notification(@record).deliver
 
-          uri = URI.parse 'http://textbelt.com/text'
-          Net::HTTP.post_form(uri, {'number' => ENV['PHONE_NUMBER'], 'message' => 'A purchase has been made at flatjack.com'})
+          # Send owner a text with error
+          send_text(ENV['PHONE_NUMBER'], 'A purchase has been made at flatjack.com')
 
         rescue Stripe::InvalidRequestError,
                Stripe::AuthenticationError,
                Stripe::APIConnectionError,
                Stripe::StripeError => e
-          #Send Josh a text
+
+          # Send developer a text with error
+          send_text(ENV['DEV_PHONE_NUMBER'], 'Failed purchase: ' + e.to_s + 'Value: $' + (transaction.purchases.map(&:total).sum / 100.00).to_s)
+
+          # Define errors and redirect path
           stripe_errors = e
           redirect_path =  order_path
         end
@@ -98,6 +109,11 @@ class VisitorsController < ApplicationController
   private
     def transaction_params
       params.require(:transaction).permit(:stripe_card_token, :products)
+    end
+
+    def send_text(number, message)
+      uri = URI.parse 'http://textbelt.com/text'
+      Net::HTTP.post_form(uri, {'number' => number, 'message' => ('FlatJack: ' + message)})
     end
 
 end
