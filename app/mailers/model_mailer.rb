@@ -18,7 +18,7 @@ class ModelMailer < ActionMailer::Base
   def new_record_notification(record)
     @record = record
     #mail to: @record.email, subject: "Success! You did it."
-    mail to: @record.email, subject: "Flat-Jack - Order Received"
+    mail to: @record.email, subject: "Flat-Jack - Order Received", :bcc => ["Info@flatjack.com", "Copy of order placed at flatjack.com <" + @record.email + ">"]
   end
 
 end
