@@ -280,21 +280,35 @@
       </div>
       <div class="panel-body">
           <%= bootstrap_form_for(:transaction, {url: "/visitors/receive", method: :post, html: {id: 'checkout-form'}}) do |f| %>
-              <%= f.hidden_field :products, class: 'submit_to' %>
-              <%= f.hidden_field :stripe_card_token %>
-              <%= f.text_field :name, class: "name_space" %>
-              <%= f.text_field :email, class: "email_space" %>
-              <%= f.text_field :cell, class: "phone_space", label: "Telephone Number (numbers only)" %>
-              <%= f.text_field :address, class: "address_space" %>
-              <div class="col-sm-4" style="padding-left:0px;"><%= f.text_field :city, class: "city_space" %></div>
-              <div class="col-sm-4" style="padding:0px;"><%= f.text_field :state, class: "state_space" %></div>
-              <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :zip, class: "zip_space" %></div>
-              <div class="col-sm-12" style="padding-top:15px;"><hr /></div>
-              <div class="col-sm-8" style="padding:0px;"><%= f.text_field :number, class: "number_space", label: "Card Number (numbers only)" %></div>
-              <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :cvc, class: "cvc_space", label: "CVC" %></div>
-              <div class="col-sm-8" style="padding:0px;"><%= f.select :month, 1..12 %></div>
-              <div class="col-sm-4" style="padding-right:0px;"><%= f.select :year, Date.today.year..10.years.from_now.year %></div>
-              <div class="col-sm-12" style="padding:0px;"><%= f.submit 'Submit', id: 'submit_transaction' %></div>
+            <%= f.hidden_field :products, class: 'submit_to' %>
+            <%= f.hidden_field :stripe_card_token %>
+            <%= f.text_field :name, class: "name_space" %>
+            <%= f.text_field :email, class: "email_space" %>
+            <%= f.text_field :cell, class: "phone_space", label: "Telephone Number (numbers only)" %>
+
+            <div class="col-sm-12" style="padding-top:15px;"><hr /></div>
+            <div class="col-sm-8" style="padding:0px;"><%= f.text_field :number, class: "number_space", label: "Card Number (numbers only)" %></div>
+            <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :cvc, class: "cvc_space", label: "CVC" %></div>
+            <div class="col-sm-8" style="padding:0px;"><%= f.select :month, 1..12 %></div>
+            <div class="col-sm-4" style="padding-right:0px;"><%= f.select :year, Date.today.year..10.years.from_now.year %></div>
+            <%= f.text_field :address, class: "address_space" %>
+            <div class="col-sm-4" style="padding-left:0px;"><%= f.text_field :city, class: "city_space" %></div>
+            <div class="col-sm-4" style="padding:0px;"><%= f.text_field :state, class: "state_space" %></div>
+            <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :zip, class: "zip_space" %></div>
+            <div class="clearfix"></div>
+            <div id="alternate_address" class="well">
+                <h4 class="centered">Shipping Location (if different from billing)</h4>
+                <%= f.text_field :address, class: "address_space" %>
+                <div class="col-sm-4" style="padding-left:0px;"><%= f.text_field :city, class: "city_space" %></div>
+                <div class="col-sm-4" style="padding:0px;"><%= f.text_field :state, class: "state_space" %></div>
+                <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :zip, class: "zip_space" %></div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-sm-12" style="padding:0px;">
+              <%= f.submit 'Submit', id: 'submit_transaction' %>
+              <a class="pull-right toggle-address-space">Shipping location</a>
+            </div>
+
           <% end %>
         </div>
     </div>
@@ -306,6 +320,14 @@
     $( ".form-control" ).keypress(function() {
         $(this).removeClass("lit");
     });
+
+    $( ".toggle-address-space" ).click(function() {
+        $('#alternate_address').slideToggle();
+        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+    });
+
+
+
 </script>
 
 
