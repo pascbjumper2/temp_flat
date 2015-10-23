@@ -1,7 +1,7 @@
 
 <h1 style="text-align: center; font-size: 25px;">Flat-Jack</h1>
 <p style="font-size: 18px;"><b>Name:</b> <%= @record.first_name %></p>
-<p style="font-size: 18px;"><b>Shipping Address:</b> <%= @record.address %>, <%= @record.zip %>, <%= @record.city %>, <%= @record.state %></p>
+<p style="font-size: 18px;"><b>Shipping Address:</b> <%= @record.full_shipping_address %></p>
 <p style="font-size: 14px;">If this information is incorrect, contact <%= Design.first.email %></p>
 <br />
 <div style="border-style:solid; border-width: 2px; border-radius: 12px; max-width: 600px; padding:12px; margin-left:auto; margin-right:auto; background-color: #ddd;">
