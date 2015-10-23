@@ -298,14 +298,14 @@
             <div class="clearfix"></div>
             <div id="alternate_address" class="well">
                 <h4 class="centered">Shipping Location (if different from billing)</h4>
-                <%= f.text_field :address, class: "address_space" %>
-                <div class="col-sm-4" style="padding-left:0px;"><%= f.text_field :city, class: "city_space" %></div>
-                <div class="col-sm-4" style="padding:0px;"><%= f.text_field :state, class: "state_space" %></div>
-                <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :zip, class: "zip_space" %></div>
+                <%= f.text_field :shipping_address, class: "address_space" %>
+                <div class="col-sm-4" style="padding-left:0px;"><%= f.text_field :shipping_city, class: "city_space" %></div>
+                <div class="col-sm-4" style="padding:0px;"><%= f.text_field :shipping_state, class: "state_space" %></div>
+                <div class="col-sm-4" style="padding-right:0px;"><%= f.text_field :shipping_zip, class: "zip_space" %></div>
                 <div class="clearfix"></div>
             </div>
             <div class="col-sm-12" style="padding:0px;">
-              <%= f.submit 'Submit', id: 'submit_transaction' %>
+              <%= f.submit 'Submit', id: 'submit_transaction', class: 'pull-left btn btn-primary' %><div id="checkout_message">Processing the order may take several seconds</div>
               <a class="pull-right toggle-address-space">Shipping location</a>
             </div>
 
