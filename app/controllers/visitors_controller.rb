@@ -37,6 +37,7 @@ class VisitorsController < ApplicationController
         purchase.shipping = product.shipping
         purchase.serial = product.serial
         purchase.save
+
         transaction.save
       end
 
@@ -105,7 +106,7 @@ class VisitorsController < ApplicationController
 
   private
     def transaction_params
-      params.require(:transaction).permit(:stripe_card_token, :products)
+      params.require(:transaction).permit(:stripe_card_token, :products, :shipping_address, :shipping_city, :shipping_state, :shipping_zip)
     end
 
     def send_text(number, message)

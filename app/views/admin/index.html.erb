@@ -235,7 +235,7 @@
               <div class="panel-body">
                 <div class="col-md-6">
                   <p><b>Name: </b><%= f.first_name || "N/A" %></p>
-                  <p><b>Address: </b><%= f.address || "N/A" %>, <%= f.zip || "N/A" %>, <%= f.city || "N/A" %>, <%= f.state || "N/A" %></p>
+                  <p><b>Address: </b><%= f.full_shipping_address %></p>
                   <p><b>Telephone Number: </b> <%= number_to_phone(f.phone) || "N/A" %></p>
                   <p><b>Email: </b><%= f.email || "N/A" %></p>
                 </div>
