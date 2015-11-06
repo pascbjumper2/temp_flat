@@ -9,12 +9,6 @@ class CreateTransactionns < ActiveRecord::Migration
       t.string :state
       t.integer :zip
 
-      t.string :shipping_address
-      t.string :shipping_address_2
-      t.string :shipping_city
-      t.string :shipping_state
-      t.integer :shipping_zip
-
       t.integer :phone
       t.string :email
       t.boolean :success
